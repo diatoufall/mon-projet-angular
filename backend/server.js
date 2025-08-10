@@ -52,6 +52,9 @@ app.post('/login', (req, res) => {
     });
 });
 const { router: usersRouter, verifyToken } = require('./usersController');
+app.get('/', (req, res) => {
+  res.send('API Backend en marche');
+});
 app.use('/', usersRouter);
 
 app.listen(3000, () => {
