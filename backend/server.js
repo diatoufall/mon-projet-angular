@@ -51,6 +51,8 @@ app.post('/login', (req, res) => {
         res.json({ message: 'Connexion réussie', token });
     });
 });
+const { router: usersRouter, verifyToken } = require('./usersController');
+app.use('/', usersRouter);
 
 app.listen(3000, () => {
     console.log('Backend démarré sur http://localhost:3000');
