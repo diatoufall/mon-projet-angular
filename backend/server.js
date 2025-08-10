@@ -51,13 +51,13 @@ app.post('/login', (req, res) => {
         res.json({ message: 'Connexion réussie', token });
     });
 });
+
+// Route racine
+app.get('/', (req, res) => {
+    res.send('API Backend en marche');
+});
+
 const { router: usersRouter, verifyToken } = require('./usersController');
-app.get('/', (req, res) => {
-  res.send('API Backend en marche');
-});
-app.get('/', (req, res) => {
-  res.send('API Backend en marche');
-});
 app.use('/', usersRouter);
 
 app.listen(3000, () => {
