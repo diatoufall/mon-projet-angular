@@ -8,15 +8,15 @@ const SECRET_KEY = 'SECRET123';
 
 const db = new sqlite3.Database('./database.db');
 
-// Création de la table users (à faire ici ou dans un fichier de setup séparé)
 db.run(`CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE,
   password TEXT
 )`);
 
-// Routes
 router.post('/register', (req, res) => {
+  console.log('POST /users/register reçu'); // <-- Pour debug
+
   const { username, password } = req.body;
   const hashedPassword = bcrypt.hashSync(password, 8);
 
