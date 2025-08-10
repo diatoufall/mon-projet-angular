@@ -23,7 +23,7 @@ db.run(`CREATE TABLE IF NOT EXISTS users (
 )`);
 
 // Route d'inscription
-app.post('/register', (req, res) => {
+app.post('/users/register', (req, res) => {
     const { username, password } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -37,7 +37,7 @@ app.post('/register', (req, res) => {
 });
 
 // Route de connexion
-app.post('/login', (req, res) => {
+app.post('/users/login', (req, res) => {
     const { username, password } = req.body;
 
     db.get(`SELECT * FROM users WHERE username = ?`, [username], (err, row) => {
@@ -52,13 +52,10 @@ app.post('/login', (req, res) => {
     });
 });
 
-// Route racine
-app.get('/', (req, res) => {
+// Route racine pour test simple
+app.get('/api', (req, res) => {
     res.send('API Backend en marche');
 });
-
-const { router: usersRouter, verifyToken } = require('./usersController');
-//app.use('/', usersRouter);
 
 app.listen(3000, () => {
     console.log('Backend démarré sur http://localhost:3000');
