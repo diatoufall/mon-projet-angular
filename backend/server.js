@@ -58,7 +58,7 @@ app.get('/', (req, res) => {
 });
 
 const { router: usersRouter, verifyToken } = require('./usersController');
-app.use('/', usersRouter);
+//app.use('/', usersRouter);
 
 app.listen(3000, () => {
     console.log('Backend démarré sur http://localhost:3000');
