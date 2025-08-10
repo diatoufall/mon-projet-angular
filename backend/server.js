@@ -6,12 +6,10 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Route racine simple pour test
 app.get('/api', (req, res) => {
   res.send('API Backend en marche');
 });
 
-// Import du router users
 const { router: usersRouter } = require('./usersController');
 app.use('/users', usersRouter);
 
