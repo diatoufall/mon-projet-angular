@@ -22,7 +22,12 @@ export class LoginComponent {
         localStorage.setItem('token', res.token);
         this.message = 'Connexion réussie';
       },
+      
       error: err => this.message = err.error.error
     });
+    this.authService.getProfile().subscribe(profile => {
+  console.log('Profil:', profile);
+});
+
   }
 }

@@ -22,4 +22,10 @@ export class AuthService {
   getToken() {
     return localStorage.getItem('token');
   }
+  getProfile() {
+  return this.http.get(`${this.apiUrl}/profile`, {
+    headers: { Authorization: `Bearer ${this.getToken()}` }
+  });
+}
+
 }
