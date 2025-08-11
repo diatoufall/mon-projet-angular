@@ -1,16 +1,42 @@
-import { TestBed } from '@angular/core/testing';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
-import { AuthService } from './auth.service';
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
 
-describe('AuthService', () => {
-  let service: AuthService;
+  private apiUrl = 'http://localhost:4000/users';
+  private loggedIn = new BehaviorSubject<boolean>(false);
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthService);
-  });
+  constructor(private http: HttpClient) {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.loggedIn.next(true);
+    }
+  }
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  login(credentials: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
+      tap((response: any) => {
+        localStorage.setItem('token', response.token);
+        this.loggedIn.next(true);
+      })
+    );
+  }
+
+  register(credentials: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, credentials);
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    this.loggedIn.next(false);
+  }
+
+  isLoggedIn(): Observable<boolean> {
+    return this.loggedIn.asObservable();
+  }
+}
