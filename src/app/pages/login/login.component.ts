@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,20 +15,15 @@ export class LoginComponent {
   password = '';
   message = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
     this.authService.login(this.username, this.password).subscribe({
       next: (res) => {
-        localStorage.setItem('token', res.token);
         this.message = 'Connexion réussie';
+        this.router.navigate(['/protected']); // Redirige vers la page protégée
       },
-      
       error: err => this.message = err.error.error
     });
-    this.authService.getProfile().subscribe(profile => {
-  console.log('Profil:', profile);
-});
-
   }
 }
