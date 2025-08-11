@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const sqlite3 = require('sqlite3').verbose();
 const jwt = require('jsonwebtoken');
+const verifyToken = require('./authMiddleware');
 
 const router = express.Router();
 const db = new sqlite3.Database('./database.db');
@@ -53,5 +54,12 @@ router.post('/login', (req, res) => {
     });
   });
 });
-
+router.get('/profile', verifyToken, (req, res) => {
+  db.get(`SELECT id, username FROM users WHERE id = ?`, [req.userId], (err, user) => {
+    if (err) {
+      return res.status(500).json({ error: 'Erreur serveur' });
+    }
+    res.json(user);
+  });
+});
 module.exports = router;
